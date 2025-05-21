@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const message = document.getElementById('login-message');
   const forgotLink = document.getElementById('forgot');
 
+  // Populate from localStorage if "remember me" was checked
   if (localStorage.getItem('rememberMe') === 'true') {
     emailField.value = localStorage.getItem('email') || '';
     passwordField.value = localStorage.getItem('password') || '';
