@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.container {
+  background-color: white;
+  display: flex;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 900px;
+  max-width: 100%;
+  z-index: 2;
+  position: relative;
+}
+
+.left {
+  background: transparent;
+  color: white;
+  padding: 40px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left img {
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.right {
+  flex: 1;
+  padding: 40px;
+  background-color: white;
+}
+
+.right h2 {
+  margin-bottom: 10px;
+}
+
+.right p {
+  margin-bottom: 20px;
+  color: gray;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.signin-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  color: gray;
+}
+
+.socials {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.socials button {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: white;
+}
+
+.bottom-text {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.bottom-text a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+#login-message {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Brand Stripe */
+.brand-stripe {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  z-index: 1;
+  pointer-events: none;
+  left: -300px;
+}
+
+.brand-stripe span {
+  font-size: 60px;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+}
+
+.brand-stripe span:nth-child(1) { opacity: 0.05; }
+.brand-stripe span:nth-child(2) { opacity: 0.1; }
+.brand-stripe span:nth-child(3) { opacity: 0.15; }
+.brand-stripe span:nth-child(4) { opacity: 0.2; }
+.brand-stripe span:nth-child(5) { opacity: 0.25; }
