@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
     alert("Password reset functionality coming soon!");
   });
-
+  // figagji;dugowd
   document.querySelectorAll('.socials button').forEach(btn =>
     btn.addEventListener('click', () =>
       alert('Social login is under development.')
