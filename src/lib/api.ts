@@ -196,6 +196,24 @@ async deleteCourse(courseId: string) {
   async getUserProgress(userId: string) {
     return this.request<any>(`/analytics/progress/${userId}`);
   }
+
+  async getUsers() {
+    return this.request<any[]>('/users');
+  }
+
+  async updateUserRole(userId: string, role: string) {
+    return this.request<any>(`/users/${userId}/role`, {
+      method: 'PUT',
+      body: JSON.stringify({ role }),
+    });
+  }
+
+  async assignProjectToUser(userId: string, projectId: string) {
+    return this.request<any>('/users/assign-project', {
+      method: 'POST',
+      body: JSON.stringify({ userId, projectId }),
+    });
+  }
 }
 
 export const apiClient = new ApiClient();

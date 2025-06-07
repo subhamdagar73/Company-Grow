@@ -26,6 +26,7 @@ interface Course {
 
 const Courses: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [myEnrollments, setMyEnrollments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [enrolling, setEnrolling] = useState<string | null>(null);
@@ -33,24 +34,29 @@ const Courses: React.FC = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCoursesAndEnrollments = async () => {
       try {
-        const data = await apiClient.getCourses();
-        setCourses(data);
+        const [coursesData, enrollmentsData] = await Promise.all([
+          apiClient.getCourses(),
+          apiClient.getMyEnrollments(),
+        ]);
+        setCourses(coursesData);
+        setMyEnrollments(enrollmentsData.map((e: any) => e._id));
       } catch (error) {
-        console.error('Failed to fetch courses:', error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCourses();
+    fetchCoursesAndEnrollments();
   }, []);
 
   const handleEnroll = async (courseId: string) => {
     setEnrolling(courseId);
     try {
       await apiClient.enrollInCourse(courseId);
+      setMyEnrollments([...myEnrollments, courseId]);
       alert('Successfully enrolled in course!');
     } catch (error: any) {
       if (error.message.includes('Already enrolled')) {
@@ -172,7 +178,11 @@ const Courses: React.FC = () => {
                   className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors disabled:opacity-50"
                 >
                   <BookOpen className="h-3 w-3 mr-1" />
-                  {enrolling === course._id ? 'Enrolling...' : 'Enrolled'}
+                  {myEnrollments.includes(course._id)
+                    ? 'Enrolled'
+                    : enrolling === course._id
+                    ? 'Enrolling...'
+                    : 'Enroll'}
                 </button>
 
                 {(user?.role === 'admin' || user?.role === 'manager') && (

@@ -11,7 +11,9 @@ import Projects from './pages/Projects';
 import Badges from './pages/Badges';
 import Analytics from './pages/Analytics';
 import AdminDashboard from './pages/AdminDashboard';
+import ManagerDashboard from './pages/ManagerDashboard';
 import ManageUsers from './pages/ManageUsers';
+import ManageTeam from './pages/ManageTeam';
 import PlatformSettings from './pages/PlatformSettings';
 
 function App() {
@@ -74,13 +76,23 @@ function App() {
           <Route
             path="/admin"
             element={
-              <ProtectedRoute requireRole={['admin', 'manager']}>
-                <Layout>
-                  <AdminDashboard />
-                </Layout>
-              </ProtectedRoute>
-            }
+             <ProtectedRoute requireRole={['admin']}>
+               <Layout>
+                 <AdminDashboard />
+               </Layout>
+             </ProtectedRoute>
+           }
           />
+         <Route
+           path="/manager"
+           element={
+             <ProtectedRoute requireRole={['manager']}>
+               <Layout>
+                 <ManagerDashboard />
+               </Layout>
+             </ProtectedRoute>
+           }
+         />
           <Route
            path="/admin/users"
            element={
@@ -92,7 +104,17 @@ function App() {
            }
          />
          <Route
-           path="/admin/settings"
+          path="/manager/team"
+          element={
+            <ProtectedRoute requireRole={['manager']}>
+              <Layout>
+                <ManageTeam />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/settings"
            element={
              <ProtectedRoute requireRole={['admin']}>
                <Layout>
