@@ -139,5 +139,18 @@ router.get('/user/enrolled', authenticateToken, async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+router.delete('/:id', authenticateToken, requireRole(['admin', 'manager']), async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    await course.remove();
+    res.json({ message: 'Course deleted successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 export default router;

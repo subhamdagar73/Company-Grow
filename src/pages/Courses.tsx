@@ -7,7 +7,8 @@ import {
   Users, 
   Star,
   Plus,
-  Filter
+  Filter,
+  Trash2
 } from 'lucide-react';
 
 interface Course {
@@ -59,6 +60,20 @@ const Courses: React.FC = () => {
       }
     } finally {
       setEnrolling(null);
+    }
+  };
+
+  const handleDelete = async (courseId: string) => {
+    if (!window.confirm('Are you sure you want to delete this course?')) {
+      return;
+    }
+
+    try {
+      await apiClient.deleteCourse(courseId);
+      setCourses(prevCourses => prevCourses.filter(course => course._id !== courseId));
+      alert('Course deleted successfully!');
+    } catch (error) {
+      alert('Failed to delete course. Please try again later.');
     }
   };
 
@@ -159,6 +174,16 @@ const Courses: React.FC = () => {
                   <BookOpen className="h-3 w-3 mr-1" />
                   {enrolling === course._id ? 'Enrolling...' : 'Enroll'}
                 </button>
+
+                {(user?.role === 'admin' || user?.role === 'manager') && (
+                  <button
+                    onClick={() => handleDelete(course._id)}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-600 bg-red-100 hover:bg-red-200 transition-colors"
+                  >
+                    <Trash2 className="h-3 w-3 mr-1" />
+                    Delete
+                  </button>
+                )}
               </div>
             </div>
           </div>
