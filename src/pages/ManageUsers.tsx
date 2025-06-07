@@ -78,7 +78,7 @@ const ManageUsers: React.FC = () => {
                 <td className="py-2 px-4 border-b">{user.email}</td>
                 <td className="py-2 px-4 border-b">{user.role}</td>
                 <td className="py-2 px-4 border-b">
-                  {user?.role === 'admin' && (
+                  {user.role !== 'admin' && (
                     <select
                       defaultValue={user.role}
                       onChange={(e) => handleRoleChange(user._id, e.target.value)}
@@ -89,7 +89,7 @@ const ManageUsers: React.FC = () => {
                       <option value="admin">Admin</option>
                     </select>
                   )}
-                  {(user?.role === 'admin' || user?.role === 'manager') && (
+                  {(user.role !== 'admin') && (
                     <select
                       onChange={(e) => handleAssignProject(user._id, e.target.value)}
                       className="border rounded p-1 ml-2"

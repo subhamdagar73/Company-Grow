@@ -1,5 +1,7 @@
 import express from 'express';
 import Project from '../models/Project.js';
+import Badge from '../models/Badge.js';
+import User from '../models/User.js';
 import { authenticateToken, requireRole } from '../middleware/auth.js';
 import upload from '../middleware/upload.js';
 
@@ -111,9 +113,19 @@ router.put('/:id/status', authenticateToken, async (req, res) => {
       );
       
       assignment.status = status;
-      if (status === 'completed') {
-        assignment.completedAt = new Date();
-      }
+      if (status === 'completed' && !assignment.completedAt) {
+       assignment.completedAt = new Date();
+
+       const projectCompletionBadge = await Badge.findOne({ criteria: 'complete_project' });
+       if (projectCompletionBadge) {
+           const user = await User.findById(req.user._id);
+           if (user && !user.badges.includes(projectCompletionBadge._id)) {
+               user.badges.push(projectCompletionBadge._id);
+               user.totalPoints += projectCompletionBadge.points;
+               await user.save();
+           }
+       }
+     }
     } else {
       project.status = status;
     }

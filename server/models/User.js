@@ -49,9 +49,26 @@ const userSchema = new mongoose.Schema({
   totalPoints: {
     type: Number,
     default: 0
+  },
+  rank: {
+    type: String,
+    default: 'Beginner'
   }
 }, {
   timestamps: true
+});
+
+userSchema.pre('save', function(next) {
+  if (this.isModified('totalPoints')) {
+    if (this.totalPoints < 10) {
+      this.rank = 'Beginner';
+    } else if (this.totalPoints < 100) {
+      this.rank = 'Intermediate';
+    } else {
+      this.rank = 'Advanced';
+    }
+  }
+  next();
 });
 
 userSchema.pre('save', async function(next) {

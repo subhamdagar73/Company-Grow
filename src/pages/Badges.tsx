@@ -13,6 +13,7 @@ interface Badge {
 
 const Badges: React.FC = () => {
   const [badges, setBadges] = useState<Badge[]>([]);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const Badges: React.FC = () => {
       try {
         const data = await apiClient.getMyBadges();
         setBadges(data.badges);
+        setUser(data);
       } catch (error) {
         console.error('Failed to fetch badges:', error);
       } finally {
@@ -39,7 +41,6 @@ const Badges: React.FC = () => {
     }
   };
 
-  const totalPoints = badges.reduce((sum, badge) => sum + badge.points, 0);
 
   if (loading) {
     return (
@@ -81,7 +82,7 @@ const Badges: React.FC = () => {
             <Star className="h-8 w-8 mr-3" />
             <div>
               <p className="text-blue-100">Total Points</p>
-              <p className="text-2xl font-bold">{totalPoints}</p>
+              <p className="text-2xl font-bold">{user?.totalPoints || 0}</p>
             </div>
           </div>
         </div>
@@ -92,7 +93,7 @@ const Badges: React.FC = () => {
             <div>
               <p className="text-green-100">Rank</p>
               <p className="text-2xl font-bold">
-                {badges.length >= 5 ? 'Expert' : badges.length >= 3 ? 'Advanced' : 'Beginner'}
+                {user?.rank || 'Beginner'}
               </p>
             </div>
           </div>
