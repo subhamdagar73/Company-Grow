@@ -178,9 +178,9 @@ const Courses: React.FC = () => {
       {showCreateModal && (
         <CreateCourseModal
           onClose={() => setShowCreateModal(false)}
-          onSuccess={() => {
+          onSuccess={(newCourse) => {
+            setCourses(prevCourses => [newCourse, ...prevCourses]);
             setShowCreateModal(false);
-            window.location.reload();
           }}
         />
       )}
@@ -190,7 +190,7 @@ const Courses: React.FC = () => {
 
 const CreateCourseModal: React.FC<{
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (newCourse: Course) => void;
 }> = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -205,8 +205,8 @@ const CreateCourseModal: React.FC<{
     setLoading(true);
 
     try {
-      await apiClient.createCourse(formData);
-      onSuccess();
+      const newCourse = await apiClient.createCourse(formData);
+      onSuccess(newCourse);
     } catch (error) {
       alert('Failed to create course');
     } finally {
