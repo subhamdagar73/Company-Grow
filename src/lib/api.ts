@@ -94,6 +94,11 @@ export class ApiClient {
       throw error;
     }
   }
+async deleteCourse(courseId: string) {
+    return this.request<any>(`/courses/${courseId}`, {
+      method: 'DELETE',
+    });
+  }
 
   async getMyEnrollments() {
     return this.request<any[]>('/courses/user/enrolled');

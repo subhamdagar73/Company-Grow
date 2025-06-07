@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { apiClient } from '../lib/api';
+import { jwtDecode } from 'jwt-decode';
 
 interface User {
   id: string;
@@ -40,10 +41,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
     if (token) {
-      setLoading(false);
-    } else {
-      setLoading(false);
+      try {
+        const decodedUser: User = jwtDecode(token);
+        setUser(decodedUser);
+      } catch (error) {
+        console.error("Invalid token:", error);
+        apiClient.logout();
+      }
     }
+    setLoading(false);
   }, []);
 
   const login = async (email: string, password: string) => {
