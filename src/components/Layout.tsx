@@ -28,8 +28,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: 'Analytics', href: '/analytics', icon: BarChart3 },
   ];
 
-  if (user?.role === 'admin' || user?.role === 'manager') {
+  if (user?.role === 'admin') {
     navigationItems.push({ name: 'Admin', href: '/admin', icon: Settings });
+  } else if (user?.role === 'manager') {
+    navigationItems.push({ name: 'Manager', href: '/manager', icon: Settings });
   }
 
   const isActive = (href: string) => location.pathname === href;

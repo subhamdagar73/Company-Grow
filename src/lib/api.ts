@@ -105,10 +105,16 @@ export class ApiClient {
     }
   }
 async deleteCourse(courseId: string) {
-    return this.request<any>(`/courses/${courseId}`, {
-      method: 'DELETE',
-    });
-  }
+  return this.request<any>(`/courses/${courseId}`, {
+    method: 'DELETE',
+  });
+}
+
+async deleteProject(projectId: string) {
+  return this.request<any>(`/projects/${projectId}`, {
+    method: 'DELETE',
+  });
+}
 
   async getMyEnrollments() {
     return this.request<any[]>('/courses/user/enrolled');
@@ -118,6 +124,12 @@ async deleteCourse(courseId: string) {
     return this.request<any>(`/courses/${courseId}/progress`, {
       method: 'PUT',
       body: JSON.stringify({ progress }),
+    });
+  }
+
+  async completeCourse(courseId: string) {
+    return this.request<any>(`/courses/${courseId}/complete`, {
+      method: 'POST',
     });
   }
 
@@ -195,6 +207,24 @@ async deleteCourse(courseId: string) {
 
   async getUserProgress(userId: string) {
     return this.request<any>(`/analytics/progress/${userId}`);
+  }
+
+  async getUsers() {
+    return this.request<any[]>('/users');
+  }
+
+  async updateUserRole(userId: string, role: string) {
+    return this.request<any>(`/users/${userId}/role`, {
+      method: 'PUT',
+      body: JSON.stringify({ role }),
+    });
+  }
+
+  async assignProjectToUser(userId: string, projectId: string) {
+    return this.request<any>('/users/assign-project', {
+      method: 'POST',
+      body: JSON.stringify({ userId, projectId }),
+    });
   }
 }
 

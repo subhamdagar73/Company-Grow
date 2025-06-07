@@ -50,7 +50,7 @@ const Projects: React.FC = () => {
   const handleDelete = async (projectId: string) => {
    if (window.confirm('Are you sure you want to delete this project?')) {
      try {
-       await apiClient.delete(`/projects/${projectId}`);
+       await apiClient.deleteProject(projectId);
        setProjects(projects.filter(p => p.id !== projectId));
      } catch (error) {
        console.error('Failed to delete project:', error);

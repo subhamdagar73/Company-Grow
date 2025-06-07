@@ -26,6 +26,7 @@ interface Course {
 
 const Courses: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [myEnrollments, setMyEnrollments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [enrolling, setEnrolling] = useState<string | null>(null);
@@ -33,24 +34,29 @@ const Courses: React.FC = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCoursesAndEnrollments = async () => {
       try {
-        const data = await apiClient.getCourses();
-        setCourses(data);
+        const [coursesData, enrollmentsData] = await Promise.all([
+          apiClient.getCourses(),
+          apiClient.getMyEnrollments(),
+        ]);
+        setCourses(coursesData);
+        setMyEnrollments(enrollmentsData);
       } catch (error) {
-        console.error('Failed to fetch courses:', error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCourses();
+    fetchCoursesAndEnrollments();
   }, []);
 
   const handleEnroll = async (courseId: string) => {
     setEnrolling(courseId);
     try {
       await apiClient.enrollInCourse(courseId);
+      setMyEnrollments([...myEnrollments, { _id: courseId, completedAt: null }]);
       alert('Successfully enrolled in course!');
     } catch (error: any) {
       if (error.message.includes('Already enrolled')) {
@@ -60,6 +66,16 @@ const Courses: React.FC = () => {
       }
     } finally {
       setEnrolling(null);
+    }
+  };
+
+  const handleComplete = async (courseId: string) => {
+    try {
+      await apiClient.completeCourse(courseId);
+      setMyEnrollments(myEnrollments.map(e => e._id === courseId ? { ...e, completedAt: new Date() } : e));
+      alert('Course completed successfully!');
+    } catch (error) {
+      alert('Failed to complete course.');
     }
   };
 
@@ -166,14 +182,27 @@ const Courses: React.FC = () => {
                 <div className="text-xs text-gray-500">
                   By {course.createdBy?.firstName} {course.createdBy?.lastName}
                 </div>
-                <button
-                  onClick={() => handleEnroll(course._id)}
-                  disabled={enrolling === course._id}
-                  className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors disabled:opacity-50"
-                >
-                  <BookOpen className="h-3 w-3 mr-1" />
-                  {enrolling === course._id ? 'Enrolling...' : 'Enrolled'}
-                </button>
+                {myEnrollments.find(e => e._id === course._id)?.completedAt ? (
+                  <span className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-green-600 bg-green-100">
+                    Completed
+                  </span>
+                ) : myEnrollments.some(e => e._id === course._id) ? (
+                  <button
+                    onClick={() => handleComplete(course._id)}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-green-600 bg-green-100 hover:bg-green-200 transition-colors"
+                  >
+                    Complete
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleEnroll(course._id)}
+                    disabled={enrolling === course._id}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors disabled:opacity-50"
+                  >
+                    <BookOpen className="h-3 w-3 mr-1" />
+                    {enrolling === course._id ? 'Enrolling...' : 'Enroll'}
+                  </button>
+                )}
 
                 {(user?.role === 'admin' || user?.role === 'manager') && (
                   <button

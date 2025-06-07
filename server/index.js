@@ -9,6 +9,7 @@ import projectRoutes from './routes/projects.js';
 import badgeRoutes from './routes/badges.js';
 import paymentRoutes from './routes/payments.js';
 import analyticsRoutes from './routes/analytics.js';
+import userRoutes from './routes/users.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/badges', badgeRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ 
