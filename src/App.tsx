@@ -11,6 +11,8 @@ import Projects from './pages/Projects';
 import Badges from './pages/Badges';
 import Analytics from './pages/Analytics';
 import AdminDashboard from './pages/AdminDashboard';
+import ManageUsers from './pages/ManageUsers';
+import PlatformSettings from './pages/PlatformSettings';
 
 function App() {
   return (
@@ -79,8 +81,28 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<Navigate to="/dashboard\" replace />} />
-        </Routes>
+          <Route
+           path="/admin/users"
+           element={
+             <ProtectedRoute requireRole={['admin']}>
+               <Layout>
+                 <ManageUsers />
+               </Layout>
+             </ProtectedRoute>
+           }
+         />
+         <Route
+           path="/admin/settings"
+           element={
+             <ProtectedRoute requireRole={['admin']}>
+               <Layout>
+                 <PlatformSettings />
+               </Layout>
+             </ProtectedRoute>
+           }
+         />
+         <Route path="/" element={<Navigate to="/dashboard" replace />} />
+       </Routes>
       </Router>
     </AuthProvider>
   );

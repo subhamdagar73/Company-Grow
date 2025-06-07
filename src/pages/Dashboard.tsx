@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { apiClient } from '../lib/api';
 import { 
   BookOpen, 
@@ -120,29 +121,29 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link to="/courses" className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <BookOpen className="h-8 w-8 text-blue-500 mr-3" />
               <div className="text-left">
                 <p className="font-medium text-gray-900">Browse Courses</p>
                 <p className="text-sm text-gray-500">Discover new training</p>
               </div>
-            </button>
+            </Link>
 
-            <button className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link to="/projects" className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <FolderKanban className="h-8 w-8 text-green-500 mr-3" />
               <div className="text-left">
                 <p className="font-medium text-gray-900">View Projects</p>
                 <p className="text-sm text-gray-500">Check assignments</p>
               </div>
-            </button>
+            </Link>
 
-            <button className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link to="/analytics" className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <TrendingUp className="h-8 w-8 text-purple-500 mr-3" />
               <div className="text-left">
                 <p className="font-medium text-gray-900">View Analytics</p>
                 <p className="text-sm text-gray-500">Track progress</p>
               </div>
-            </button>
+            </Link>
           </div>
         </div>
       </div>

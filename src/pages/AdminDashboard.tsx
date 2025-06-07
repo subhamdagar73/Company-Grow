@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { apiClient } from '../lib/api';
 import { 
   Users, 
@@ -23,11 +24,12 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     const fetchAdminStats = async () => {
       try {
+        const data = await apiClient.getAdminAnalytics();
         setStats({
-          totalUsers: 25,
-          totalCourses: 12,
-          totalProjects: 8,
-          totalBadges: 6
+          totalUsers: data.overview.totalUsers,
+          totalCourses: data.overview.totalCourses,
+          totalProjects: data.overview.totalProjects,
+          totalBadges: data.overview.totalBadges
         });
       } catch (error) {
         console.error('Failed to fetch admin stats:', error);
@@ -129,29 +131,29 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link to="/courses" className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <Plus className="h-8 w-8 text-blue-500 mb-3" />
               <p className="font-medium text-gray-900">Create Course</p>
               <p className="text-sm text-gray-500 text-center">Add new training content</p>
-            </button>
+            </Link>
 
-            <button className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link to="/projects" className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <FolderKanban className="h-8 w-8 text-green-500 mb-3" />
               <p className="font-medium text-gray-900">New Project</p>
               <p className="text-sm text-gray-500 text-center">Create project assignments</p>
-            </button>
+            </Link>
 
-            <button className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link to="/admin/users" className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <Users className="h-8 w-8 text-purple-500 mb-3" />
               <p className="font-medium text-gray-900">Manage Users</p>
               <p className="text-sm text-gray-500 text-center">User administration</p>
-            </button>
+            </Link>
 
-            <button className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <Link to="/admin/settings" className="flex flex-col items-center p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <Settings className="h-8 w-8 text-orange-500 mb-3" />
               <p className="font-medium text-gray-900">Platform Settings</p>
               <p className="text-sm text-gray-500 text-center">Configure system</p>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
