@@ -39,17 +39,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      try {
-        const decodedUser: User = jwtDecode(token);
-        setUser(decodedUser);
-      } catch (error) {
-        console.error("Invalid token:", error);
-        apiClient.logout();
+    const loadUser = async () => {
+      const token = localStorage.getItem('auth_token');
+      if (token) {
+        try {
+          const currentUser = await apiClient.getCurrentUser();
+          setUser(currentUser);
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+          apiClient.logout();
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    loadUser();
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -69,8 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     role?: string;
   }) => {
     try {
-      const result = await apiClient.register(userData);
-      setUser(result.user);
+      await apiClient.register(userData);
     } catch (error) {
       throw error;
     }

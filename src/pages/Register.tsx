@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { UserPlus, AlertCircle } from 'lucide-react';
 
@@ -13,8 +13,10 @@ const Register: React.FC = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const { user, register } = useAuth();
-
+  const navigate = useNavigate();
+ 
   if (user) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -33,6 +35,8 @@ const Register: React.FC = () => {
 
     try {
       await register(formData);
+      setSuccess(true);
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
     } finally {
@@ -53,6 +57,11 @@ const Register: React.FC = () => {
             <div className="bg-red-50 border border-red-200 rounded-md p-4 flex items-center">
               <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
               <span className="text-red-700">{error}</span>
+            </div>
+          )}
+          {success && (
+            <div className="bg-green-50 border border-green-200 rounded-md p-4 flex items-center">
+              <span className="text-green-700">Registration successful! Redirecting to login...</span>
             </div>
           )}
 

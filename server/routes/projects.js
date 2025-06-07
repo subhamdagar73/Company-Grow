@@ -176,4 +176,19 @@ router.post('/:id/upload', authenticateToken, upload.single('file'), async (req,
   }
 });
 
+router.delete('/:id', authenticateToken, requireRole(['admin', 'manager']), async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    await project.deleteOne();
+    
+    res.json({ message: 'Project deleted successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 export default router;

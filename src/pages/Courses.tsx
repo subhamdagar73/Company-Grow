@@ -112,7 +112,7 @@ const Courses: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Training Courses</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Discover and enroll in courses to enhance your skills
+            Discover and get enrolled in courses to enhance your skills
           </p>
         </div>
         {(user?.role === 'admin' || user?.role === 'manager') && (
@@ -172,7 +172,7 @@ const Courses: React.FC = () => {
                   className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors disabled:opacity-50"
                 >
                   <BookOpen className="h-3 w-3 mr-1" />
-                  {enrolling === course._id ? 'Enrolling...' : 'Enroll'}
+                  {enrolling === course._id ? 'Enrolling...' : 'Enrolled'}
                 </button>
 
                 {(user?.role === 'admin' || user?.role === 'manager') && (
