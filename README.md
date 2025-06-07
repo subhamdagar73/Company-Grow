@@ -14,3 +14,5 @@
 *   **Authentication:** JWT
 *   **File Storage:** Cloudinary
 *   **Payments:** Stripe
+
+*   .env file will be shared in private/google cloud
