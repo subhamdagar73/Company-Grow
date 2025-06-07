@@ -36,6 +36,12 @@ export class ApiClient {
     return response.json();
   }
 
+ async delete<T>(endpoint: string): Promise<T> {
+   return this.request<T>(endpoint, {
+     method: 'DELETE',
+   });
+ }
+
   async login(email: string, password: string) {
     const result = await this.request<{ token: string; user: any }>('/auth/login', {
       method: 'POST',
@@ -68,6 +74,10 @@ export class ApiClient {
     this.token = null;
     localStorage.removeItem('auth_token');
   }
+
+ async getCurrentUser() {
+   return this.request<any>('/auth/me');
+ }
 
   async getCourses() {
     return this.request<any[]>('/courses');

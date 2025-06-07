@@ -7,7 +7,8 @@ import {
   Tag,
   Plus,
   Filter,
-  User
+  User,
+  Trash2
 } from 'lucide-react';
 
 interface Project {
@@ -45,6 +46,18 @@ const Projects: React.FC = () => {
 
     fetchProjects();
   }, []);
+
+  const handleDelete = async (projectId: string) => {
+   if (window.confirm('Are you sure you want to delete this project?')) {
+     try {
+       await apiClient.delete(`/projects/${projectId}`);
+       setProjects(projects.filter(p => p.id !== projectId));
+     } catch (error) {
+       console.error('Failed to delete project:', error);
+       alert('Failed to delete project. Please try again.');
+     }
+   }
+ };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -165,10 +178,20 @@ const Projects: React.FC = () => {
                   <User className="h-3 w-3 mr-1" />
                   {project.created_by?.first_name} {project.created_by?.last_name}
                 </div>
-                <button className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors">
-                  <FolderKanban className="h-3 w-3 mr-1" />
-                  View Details
-                </button>
+                <div className="flex items-center space-x-2">
+                 <button className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors">
+                   <FolderKanban className="h-3 w-3 mr-1" />
+                   View Details
+                 </button>
+                 {(user?.role === 'admin' || user?.role === 'manager') && (
+                   <button
+                     onClick={() => handleDelete(project.id)}
+                     className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-600 bg-red-100 hover:bg-red-200 transition-colors"
+                   >
+                     <Trash2 className="h-3 w-3" />
+                   </button>
+                 )}
+                </div>
               </div>
             </div>
           </div>
