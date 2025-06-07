@@ -1,4 +1,7 @@
 # Company-Grow
+
+Company-Grow is a web platform designed to help companies manage employees, training, and tasks with features like course management, project assignment, progress tracking, and gamification.
+
 *   **Authentication:** Secure user registration and login with JWT-based authentication.
 *   **Role-Based Access Control:** Different roles (employee, manager, admin) with varying levels of permissions.
 *   **Courses:** Admins and managers can create and manage courses, while employees can enroll and track their progress.

@@ -5,7 +5,6 @@ import {
   FolderKanban, 
   Award, 
   TrendingUp,
-  Users,
   Clock
 } from 'lucide-react';
 
@@ -23,10 +22,16 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const data = await apiClient.getDashboardAnalytics();
+        const data: DashboardStats = await apiClient.getDashboardAnalytics();
         setStats(data);
       } catch (error) {
         console.error('Failed to fetch dashboard stats:', error);
+        setStats({
+          totalEnrollments: 0,
+          completedCourses: 0,
+          earnedBadges: 0,
+          assignedProjects: 0,
+        });
       } finally {
         setLoading(false);
       }
@@ -38,32 +43,32 @@ const Dashboard: React.FC = () => {
   const statCards = [
     {
       name: 'Course Enrollments',
-      value: stats?.totalEnrollments || 0,
+      value: stats?.totalEnrollments ?? 0,
       icon: BookOpen,
       color: 'bg-blue-500',
-      bgColor: 'bg-blue-50'
+      bgColor: 'bg-blue-50',
     },
     {
       name: 'Completed Courses',
-      value: stats?.completedCourses || 0,
+      value: stats?.completedCourses ?? 0,
       icon: Award,
       color: 'bg-green-500',
-      bgColor: 'bg-green-50'
+      bgColor: 'bg-green-50',
     },
     {
       name: 'Earned Badges',
-      value: stats?.earnedBadges || 0,
+      value: stats?.earnedBadges ?? 0,
       icon: Award,
       color: 'bg-purple-500',
-      bgColor: 'bg-purple-50'
+      bgColor: 'bg-purple-50',
     },
     {
       name: 'Active Projects',
-      value: stats?.assignedProjects || 0,
+      value: stats?.assignedProjects ?? 0,
       icon: FolderKanban,
       color: 'bg-orange-500',
-      bgColor: 'bg-orange-50'
-    }
+      bgColor: 'bg-orange-50',
+    },
   ];
 
   if (loading) {
