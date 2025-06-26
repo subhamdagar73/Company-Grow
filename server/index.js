@@ -47,6 +47,6 @@ app.use('*', (req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-app.listen(PORT, () => {
-  console.log(`CompanyGrow API server running on port ${PORT}`);
+app.listen(10000, () => {
+  console.log("Server started on port 10000");
 });
