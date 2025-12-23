@@ -11,6 +11,7 @@ import {
   Trash2
 } from 'lucide-react';
 
+
 interface Course {
   _id: string;
   title: string;
