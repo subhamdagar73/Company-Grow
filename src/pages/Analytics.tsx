@@ -10,6 +10,7 @@ import {
   Clock
 } from 'lucide-react';
 
+
 interface AnalyticsData {
   totalEnrollments: number;
   completedCourses: number;
